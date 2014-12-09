@@ -13,13 +13,11 @@ object Driver {
     val conf = new SparkConf().setMaster("local").setAppName("PDF Parsing App")
     val sc = new SparkContext(conf)
 
-    val files = sc.newAPIHadoopFile[LongWritable, Text, PdfInputFormat](
-      "file:///Users/marek/Downloads/lambda.pdf"
+    val pdfLines = sc.newAPIHadoopFile[LongWritable, Text, PdfInputFormat](
+      "src/main/resources/backus.pdf"
     )
 
-    //    val files = sc.textFile("file:///Users/marek/Downloads/out.txt")
-
-    //    files.collect().foreach(println)
+    println(s"Number of lines in PDF: ${pdfLines.count()}")
 
     sc.stop()
   }
