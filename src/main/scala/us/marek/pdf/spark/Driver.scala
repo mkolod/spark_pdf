@@ -17,8 +17,8 @@ object Driver {
       "src/main/resources/backus.pdf"
     )
 
+    pdfLines.foreach(println)
     println(s"Number of lines in PDF: ${pdfLines.count()}")
-
     sc.stop()
   }
 
