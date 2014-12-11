@@ -27,6 +27,12 @@ class SparkPdfParserTest extends WordSpec with BeforeAndAfterAll {
         assert(pdfs.count() === 3)
 
       }
+
+      "report all PDFs as non-empty" in {
+
+        pdfs.map { case (k, v) => v.get.contentHandler.toString }.collect().forall(_.length > 0)
+
+      }
     }
   }
 

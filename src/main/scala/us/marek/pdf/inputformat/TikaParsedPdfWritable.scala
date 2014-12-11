@@ -11,7 +11,7 @@ import org.apache.hadoop.io.Writable
  * @author Marek Kolodziej
  * @since Dec. 11, 2014
  */
-class TikaParsedPdfWritable(pdf: TikaParsedPdf = null) extends Writable {
+class TikaParsedPdfWritable(pdf: TikaParsedPdf = null) extends Writable with Serializable {
 
   // this has to be a var because Hadoop re-uses the object for data serialization and deserialization :(
   private[this] var value = pdf
