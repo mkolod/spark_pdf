@@ -16,7 +16,7 @@ class FlipOnce(initial: Boolean) {
   lazy val internal: Int = 123 // all that matters is that it's a lazy val Int not equal to zero
 
   val im = cm reflect this
-  val f  = typeOf[FlipOnce].member(newTermName("internal")).asTerm.accessed.asTerm
+  val f = typeOf[FlipOnce].member(newTermName("internal")).asTerm.accessed.asTerm
 
   def state = {
     // was the lazy field initialized?

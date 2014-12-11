@@ -1,8 +1,8 @@
 package us.marek.pdf.spark
 
-import org.apache.hadoop.io.{ Text, LongWritable }
+import org.apache.hadoop.io.LongWritable
 import org.apache.spark.{ SparkContext, SparkConf }
-import us.marek.pdf.inputformat.PdfInputFormat
+import us.marek.pdf.inputformat.{ TikaParsedPdfWritable, PdfInputFormat }
 
 object Driver {
 
@@ -11,12 +11,29 @@ object Driver {
     val conf = new SparkConf().setMaster("local").setAppName("PDF Parsing App")
     val sc = new SparkContext(conf)
 
-    val pdfLines = sc.newAPIHadoopFile[LongWritable, Text, PdfInputFormat](
-      "src/main/resources/backus.pdf"
+    val pdfs = sc.newAPIHadoopFile[LongWritable, TikaParsedPdfWritable, PdfInputFormat](
+      "src/test/resources/*.pdf"
     )
 
-    pdfLines.foreach(println)
-    println(s"Number of lines in PDF: ${pdfLines.count()}")
+    pdfs.foreach {
+      case (docNum, writable) =>
+
+        println(s"Document # $docNum")
+        val pdf = writable.get()
+        val text = pdf.contentHandler.toString
+        val metadata = pdf.metadata
+        println(
+          s"""
+           Text:
+           $text
+
+           Metadata:
+           $metadata
+         """.stripMargin
+        )
+
+    }
+    println(s"Number of lines in PDF: ${pdfs.count()}")
     sc.stop()
   }
 
