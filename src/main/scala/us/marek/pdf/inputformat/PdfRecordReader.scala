@@ -9,7 +9,7 @@ import org.apache.pdfbox.util.PDFTextStripper
 class PdfRecordReader extends RecordReader[LongWritable, Text] {
 
   private[this] val done = new FlipOnce(true)
-  private[this] val key: LongWritable = new LongWritable(1L) //null
+  private[this] val key: LongWritable = new LongWritable(1L) 
   private[this] val value: Text = new Text()
 
   override def initialize(inputSplit: InputSplit, context: TaskAttemptContext): Unit =
