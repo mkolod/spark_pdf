@@ -37,7 +37,7 @@ object ArxivDownload extends App {
 
   def localPath(category: String) = s"/Users/marek/Downloads/pdfs/$category"
 
-  val maxResults = 1000
+  val maxResults = 500
 
   categories.foreach { case (catName, catCode) =>
 
