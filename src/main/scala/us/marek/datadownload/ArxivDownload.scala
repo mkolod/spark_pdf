@@ -15,7 +15,7 @@ import scalax.io.Resource
 object ArxivDownload extends App {
 
   val categories = Map(
-    "multimedia" -> "cs.MM",
+    "genomics" -> "q-bio.GN",
     "machineLearning" -> "stat.ML",
     "numberTheory" -> "math.NT",
     "quantumPhysics" -> "quant-ph")
@@ -37,15 +37,13 @@ object ArxivDownload extends App {
 
   def localPath(category: String) = s"/Users/marek/Downloads/pdfs/$category"
 
-  val maxResults = 10
+  val maxResults = 1000
 
-  categories.foreach {
-    case (catName, catCode) =>
+  categories.foreach { case (catName, catCode) =>
 
-      pdfLinks(url(catCode, maxResults)).foreach {
-        case (link, num) =>
+      pdfLinks(url(catCode, maxResults)).foreach { case (link, num) =>
+
           val filePath = s"${localPath(catName)}/$num.pdf"
-          println(s"Downloading $link into $filePath")
           downloadFile(link, filePath)
       }
 
