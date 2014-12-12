@@ -21,7 +21,8 @@ object PDFOnSparkBuild extends Build {
                       "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/",
                       "Sonatype releases" at "https://oss.sonatype.org/content/repositories/releases/"
                      ),
-    libraryDependencies ++= Seq("org.scalatest"     %  "scalatest_2.10"  %  "2.2.1" % "test",
+    libraryDependencies ++= Seq("com.github.scala-incubator.io" %% "scala-io-file" % "0.4.3",
+                              "org.scalatest"     %  "scalatest_2.10"  %  "2.2.1" % "test",
     	                        "org.apache.pdfbox" %  "pdfbox"          %  "1.8.7",
     	                        "org.apache.spark" %%  "spark-assembly"  %  "1.1.1",
     	                        "org.apache.tika"   %  "tika-bundle"     %  "1.6"
