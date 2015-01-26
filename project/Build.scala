@@ -12,7 +12,8 @@ object PDFOnSparkBuild extends Build {
     scalaVersion := "2.10.4",
     fork := true,
     fork in Test := false,
-    javaOptions ++= Seq("-Xmx2G", "-Xms64M", "-XX:MaxPermSize=512M", "-XX:+UseConcMarkSweepGC", "-XX:+CMSClassUnloadingEnabled"),
+   // javaOptions ++= Seq("-Xmx2G", "-Xms64M", "-XX:MaxPermSize=512M", "-XX:+UseConcMarkSweepGC", "-XX:+CMSClassUnloadingEnabled"),
+    javaOptions ++= Seq("-Xmx2G", "-Xms64M"),
     parallelExecution := true,
     parallelExecution in Test := false,
     pollInterval := 1000,
@@ -25,8 +26,9 @@ object PDFOnSparkBuild extends Build {
                               "org.scalatest"     %  "scalatest_2.10"  %  "2.2.1" % "test",
     	                        "org.apache.pdfbox" %  "pdfbox"          %  "1.8.7",
     	                        "org.apache.spark" %%  "spark-assembly"  %  "1.1.1",
-    	                        "org.apache.tika"   %  "tika-bundle"     %  "1.6"
-                                ),
+    	                        "org.apache.tika"   %  "tika-bundle"     %  "1.6",
+                              "org.bouncycastle"  %  "bcpkix-jdk14"    %   "1.51"
+                               ),
     javacOptions ++= Seq("-source", "1.6", "-target", "1.6"),
     scalacOptions ++= Seq("-unchecked", "-deprecation"),
     shellPrompt <<= name(name => { state: State =>

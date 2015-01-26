@@ -8,6 +8,8 @@ import org.apache.tika.parser.ParseContext
 import org.apache.tika.parser.pdf.PDFParser
 import org.apache.tika.sax.BodyContentHandler
 
+import scala.util.{ Failure, Success, Try }
+
 /* Unfortunately this is ugly (imperative), but Spark allows reading in binary formats
    via the Hadoop InputFormat API, which depends on a Hadoop RecordReader.
    Since Hadoop is written in Java, extending the RecordReader abstract class
@@ -41,9 +43,19 @@ class PdfRecordReader extends RecordReader[LongWritable, TikaParsedPdfWritable] 
         val metadata = new Metadata()
         val contentHandler = new BodyContentHandler(-1) // no size limit, default is 100000 characters
         val pdfParser = new PDFParser()
-        pdfParser.parse(fileIS, contentHandler, metadata, new ParseContext())
 
-        value.set(TikaParsedPdf(contentHandler, metadata))
+        // the failures might be occurring due to encryption
+        Try(pdfParser.parse(fileIS, contentHandler, metadata, new ParseContext())) match {
+
+          case Success(_) => value.set(TikaParsedPdf(contentHandler, metadata, false))
+          case Failure(t) => {
+            //            println(s"Message:\n${t.getMessage}")
+            //            println(s"Cause:\n${t.getCause}")
+            //            println(s"Stack trace:${t.getStackTrace.map(_.toString).mkString("\n")}")
+            value.set(TikaParsedPdf(new BodyContentHandler(-1), new Metadata(), true))
+          }
+        }
+
       }
 
       case other => throw new IllegalArgumentException(

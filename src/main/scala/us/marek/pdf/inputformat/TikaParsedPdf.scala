@@ -10,4 +10,4 @@ import org.apache.tika.sax.BodyContentHandler
  * @param contentHandler
  * @param metadata
  */
-case class TikaParsedPdf(contentHandler: BodyContentHandler, metadata: Metadata)
+case class TikaParsedPdf(contentHandler: BodyContentHandler, metadata: Metadata, encrypted: Boolean = false)

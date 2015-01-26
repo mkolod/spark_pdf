@@ -23,7 +23,9 @@ object Driver {
       s"$directory/*.pdf"
     )
 
-    val base = "/Users/marek/Downloads/pdfs/"
+    val base = "/Users/marek/Downloads/pdfs"
+    val mlPapers = getRDD(s"$base/ml")
+    val qpPapers = getRDD(s"$base/qp")
 
     // training set
     val mlTrain = getRDD(base + "train/machineLearning")
@@ -35,19 +37,20 @@ object Driver {
 
     val test = getRDD("src/test/resources/*.pdf")
 
-//    object Foo extends Serializable
+    //    object Foo extends Serializable
 
-    val corpusCounts: RDD[(String, Int)] = test.flatMap { case (_, pdf) =>
+    val corpusCounts: RDD[(String, Int)] = test.flatMap {
+      case (_, pdf) =>
 
-      val text = pdf.get().contentHandler.toString
-      // get rid of non-words
-      val alphasOnly = text.replaceAll("[^\\w ]", "")
-      // get rid of multiple whitespaces
-      val singleSpaces = alphasOnly.replaceAll("\\s+", " ")
-      // make everything lowercase
-      val lowerCase = singleSpaces.toLowerCase
-      // split on whitespace
-      lowerCase.split(" ")
+        val text = pdf.get().contentHandler.toString
+        // get rid of non-words
+        val alphasOnly = text.replaceAll("[^\\w ]", "")
+        // get rid of multiple whitespaces
+        val singleSpaces = alphasOnly.replaceAll("\\s+", " ")
+        // make everything lowercase
+        val lowerCase = singleSpaces.toLowerCase
+        // split on whitespace
+        lowerCase.split(" ")
       // stop words
       // stemming etc.
 
@@ -55,33 +58,31 @@ object Driver {
 
     val corpusWords = corpusCounts.keys.collect()
 
-//    sc.broadcast(corpusWords)
+    //    sc.broadcast(corpusWords)
 
     corpusCounts.collect().take(10).foreach(println)
 
+    //.collect().take(10).foreach(println)
 
-      //.collect().take(10).foreach(println)
-
-
-//    pdfs.foreach {
-//      case (docNum, writable) =>
-//
-//        println(s"Document # $docNum")
-//        val pdf = writable.get()
-//        val text = pdf.contentHandler.toString
-//        val metadata = pdf.metadata
-//        println(
-//          s"""
-//           Text:
-//           $text
-//
-//           Metadata:
-//           $metadata
-//         """.stripMargin
-//        )
-//
-//    }
-//    println(s"Number of lines in PDF: ${pdfs.count()}")
+    //    pdfs.foreach {
+    //      case (docNum, writable) =>
+    //
+    //        println(s"Document # $docNum")
+    //        val pdf = writable.get()
+    //        val text = pdf.contentHandler.toString
+    //        val metadata = pdf.metadata
+    //        println(
+    //          s"""
+    //           Text:
+    //           $text
+    //
+    //           Metadata:
+    //           $metadata
+    //         """.stripMargin
+    //        )
+    //
+    //    }
+    //    println(s"Number of lines in PDF: ${pdfs.count()}")
     sc.stop()
   }
 
