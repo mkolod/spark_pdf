@@ -35,11 +35,10 @@ object PdfBoxTest extends App {
   def getPageFontStats(doc: PDDocument)(pageNumber: Int): Map[String, Int] = {
 
     val stripper = getStripper(doc = doc, startPage = pageNumber, endPage = pageNumber + 1)
+    stripper.getText(doc) // need to have this side effect :(
     val chars = stripper.myGetCharactersByArticle
-
-    val text = stripper.getText(doc)
-
     val allTextPos = chars.flatten[TextPosition]
+    
     allTextPos.groupBy(x => normalizeFontName(x.getFont.getBaseFont)).map {
 
       case (font: String, pos: Seq[TextPosition]) => {
