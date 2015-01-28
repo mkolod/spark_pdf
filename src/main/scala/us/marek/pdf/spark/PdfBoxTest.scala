@@ -1,10 +1,9 @@
 package us.marek.pdf.spark
 
-import org.apache.pdfbox.pdfparser.PDFParser
-import org.apache.pdfbox.pdmodel.{ PDPage, PDDocument }
-import org.apache.pdfbox.util.{TextPosition, PDFTextStripper, PDFStreamEngine}
+import org.apache.pdfbox.pdmodel.PDDocument
+import org.apache.pdfbox.util.{TextPosition, PDFTextStripper }
 import scala.collection.JavaConversions._
-import java.util.{ List => JList, Vector => JVector }
+
 /**
 * @author Marek Kolodziej
 * @since 1/26/2015
@@ -22,9 +21,9 @@ object PdfBoxTest extends App {
   }
 
   // e.g. convert "KNHSZO+SegoeUI-BoldItalic" to "SegoeUI"
-  def normalizeFontName(s: String) = {
+  def normalizeFontName(s: String): String = {
 
-    def removeTrailingMeta(x: String) = x.indexOf("-") match {
+    def removeTrailingMeta(x: String): String = x.indexOf("-") match {
 
       case pos if pos > 0 => x.substring(0, pos)
       case _ => x
@@ -36,7 +35,7 @@ object PdfBoxTest extends App {
   def getPageFontStats(doc: PDDocument)(pageNumber: Int): Map[String, Int] = {
 
     val stripper = getStripper(doc = doc, startPage = pageNumber, endPage = pageNumber + 1)
-    val chars: JVector[JList[TextPosition]] = stripper.myGetCharactersByArticle
+    val chars = stripper.myGetCharactersByArticle
 
     val text = stripper.getText(doc)
 
