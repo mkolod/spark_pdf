@@ -1,13 +1,14 @@
 package us.marek.pdf.spark
 
 import org.apache.pdfbox.pdmodel.PDDocument
-import org.apache.pdfbox.util.{TextPosition, PDFTextStripper }
+import org.apache.pdfbox.util.{ TextPosition, PDFTextStripper }
 import scala.collection.JavaConversions._
+import us.marek.pdf.inputformat.MyPDFTextStripper
 
 /**
-* @author Marek Kolodziej
-* @since 1/26/2015
-*/
+ * @author Marek Kolodziej
+ * @since 1/26/2015
+ */
 object PdfBoxTest extends App {
 
   val doc = PDDocument.load("/Users/mkolodziej/Downloads/pdfs/Nitro/NitroPro8UserGuide.pdf")
@@ -38,7 +39,7 @@ object PdfBoxTest extends App {
     stripper.getText(doc) // need to have this side effect :(
     val chars = stripper.myGetCharactersByArticle
     val allTextPos = chars.flatten[TextPosition]
-    
+
     allTextPos.groupBy(x => normalizeFontName(x.getFont.getBaseFont)).map {
 
       case (font: String, pos: Seq[TextPosition]) => {
@@ -50,8 +51,7 @@ object PdfBoxTest extends App {
 
   val perPageStats = (1 to numberOfPages).map(getPageFontStats(doc))
 
-  val wholeDocStats = perPageStats.flatten.toList.groupBy(_._1).map{ case (k, v) => k -> v.map(_._2).sum }
-
+  val wholeDocStats = perPageStats.flatten.toList.groupBy(_._1).map { case (k, v) => k -> v.map(_._2).sum }
 
   println(s"""Whole-document stats:
               |
@@ -62,15 +62,6 @@ object PdfBoxTest extends App {
               |${wholeDocStats.toList.sortWith((a, b) => a._2 > b._2).map(tuple => s"${tuple._1}: ${tuple._2}").mkString("\n")}
               |""".stripMargin)
 
-//  val fullText = getStripper(doc, 1, doc.getNumberOfPages).getText(doc)
-
-}
-
-
-class MyPDFTextStripper extends PDFTextStripper {
-
-  import java.util.{ List, Vector }
-
-  def myGetCharactersByArticle: Vector[List[TextPosition]] = getCharactersByArticle
+  //  val fullText = getStripper(doc, 1, doc.getNumberOfPages).getText(doc)
 
 }

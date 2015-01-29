@@ -23,7 +23,7 @@ import scala.util.{ Failure, Success, Try }
  * @author Marek Kolodziej
  * @since Dec. 11, 2014
  */
-class PdfRecordReader extends RecordReader[LongWritable, TikaParsedPdfWritable] {
+class TikaPdfRecordReader extends RecordReader[LongWritable, TikaParsedPdfWritable] {
 
   private[this] var done = false
   private[this] val key: LongWritable = new LongWritable(1L)

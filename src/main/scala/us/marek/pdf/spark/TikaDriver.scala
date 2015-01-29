@@ -6,20 +6,20 @@ import SparkContext._
 import org.apache.hadoop.io.LongWritable
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{ SparkContext, SparkConf }
-import us.marek.pdf.inputformat.{ TikaParsedPdfWritable, PdfInputFormat }
+import us.marek.pdf.inputformat.{ TikaParsedPdfWritable, TikaPdfInputFormat }
 
-object Driver {
+object TikaDriver {
 
   def main(args: Array[String]): Unit = {
 
     val conf = new SparkConf().setMaster("local").setAppName("PDF Parsing App")
     val sc = new SparkContext(conf)
 
-    val pdfs = sc.newAPIHadoopFile[LongWritable, TikaParsedPdfWritable, PdfInputFormat](
+    val pdfs = sc.newAPIHadoopFile[LongWritable, TikaParsedPdfWritable, TikaPdfInputFormat](
       "src/test/resources/*.pdf"
     )
 
-    def getRDD(directory: String) = sc.newAPIHadoopFile[LongWritable, TikaParsedPdfWritable, PdfInputFormat](
+    def getRDD(directory: String) = sc.newAPIHadoopFile[LongWritable, TikaParsedPdfWritable, TikaPdfInputFormat](
       s"$directory/*.pdf"
     )
 

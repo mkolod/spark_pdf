@@ -23,7 +23,6 @@ object LangDetectTest extends App {
   val polish = fromFile("a.txt")
   val english = fromFile("b.txt")
 
-
   println(s"Polish: ${detect(polish)}")
   println(s"English: ${detect(english)}")
 

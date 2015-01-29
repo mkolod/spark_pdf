@@ -3,7 +3,7 @@ package us.marek.pdf
 import org.apache.hadoop.io.LongWritable
 import org.apache.spark.{ SparkContext, SparkConf }
 import org.scalatest.{ BeforeAndAfterAll, WordSpec }
-import us.marek.pdf.inputformat.{ PdfInputFormat, TikaParsedPdfWritable }
+import us.marek.pdf.inputformat.{ TikaPdfInputFormat, TikaParsedPdfWritable }
 
 /**
  * @author Marek Kolodziej
@@ -18,13 +18,13 @@ class SparkPdfParserTest extends WordSpec with BeforeAndAfterAll {
 
     "given 3 PDFs to parse" should {
 
-      val pdfs = sc.newAPIHadoopFile[LongWritable, TikaParsedPdfWritable, PdfInputFormat](
+      val pdfs = sc.newAPIHadoopFile[LongWritable, TikaParsedPdfWritable, TikaPdfInputFormat](
         "src/test/resources/*.pdf"
       )
 
       "report count of 3" in {
 
-//        assert(pdfs.count() === 3)
+        //        assert(pdfs.count() === 3)
 
       }
 

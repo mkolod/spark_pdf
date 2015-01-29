@@ -8,7 +8,7 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.{ SparkContext, SparkConf }
 import org.apache.tika.metadata.Metadata
 import scala.collection.mutable
-import us.marek.pdf.inputformat.{ TikaParsedPdf, TikaParsedPdfWritable, PdfInputFormat }
+import us.marek.pdf.inputformat.{ TikaParsedPdf, TikaParsedPdfWritable, TikaPdfInputFormat }
 
 /**
  * @author Marek Kolodziej
@@ -26,7 +26,7 @@ object Wrangling {
     val sample = 0.01
 
     def getRDD(directory: String, sample: Double = 1.0): RDD[TikaParsedPdf] =
-      sc.newAPIHadoopFile[LongWritable, TikaParsedPdfWritable, PdfInputFormat](
+      sc.newAPIHadoopFile[LongWritable, TikaParsedPdfWritable, TikaPdfInputFormat](
         s"$directory/*"
       ) map {
           case (offset, tikaObj) => tikaObj
